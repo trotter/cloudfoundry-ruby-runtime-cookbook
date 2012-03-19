@@ -1,0 +1,40 @@
+---
+name: "sinatra"
+runtimes:
+<%- if @ruby_1_8_7_runtime %>
+  - "<%= @ruby_1_8_7_runtime[:name] %>":
+      version: "<%= @ruby_1_8_7_runtime[:version] %>"
+      description: "Ruby 1.9.2"
+      executable: "<%= @ruby_1_8_7_runtime[:executable] %>"
+      default: <%= @ruby_1_8_7_runtime[:default] %>
+      environment:
+        rails_env: "production"
+        bundle_gemfile:
+        rack_env: "production"
+<%- end %>
+<%- if @ruby_1_9_2_runtime %>
+  - "<%= @ruby_1_9_2_runtime[:name] %>":
+      version: "<%= @ruby_1_9_2_runtime[:version] %>"
+      description: "Ruby 1.9.2"
+      executable: "<%= @ruby_1_9_2_runtime[:executable] %>"
+      default: <%= @ruby_1_9_2_runtime[:default] %>
+      environment:
+        rails_env: "production"
+        bundle_gemfile:
+        rack_env: "production"
+<%- end %>
+app_servers:
+  - "thin":
+      description: "Thin"
+      executable: false # determined during staging
+      default: true
+detection:
+  - "*.rb": "require 'sinatra'|require \"sinatra\"" # .rb files in the root dir containing a require?
+  - "config/environment.rb": false # and config/environment.rb must not exist
+staged_services:
+  - "name": "mysql"
+    "version": "*"
+  - "name": "postgresql"
+    "version": "*"
+  - "name": "redis"
+    "version": "2"
